@@ -1,3 +1,7 @@
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -16,10 +20,11 @@ public class AnotherAutomationSample {
 	}
 
 	public static void main(String[] args) {
+		Properties prop = new Properties();
+		getProperties(prop);
+		AnotherAutomationSample sampleUsage = new AnotherAutomationSample(new ChromeDriver());
 		
-		AnotherAutomationSample really = new AnotherAutomationSample(new ChromeDriver());
-		
-		really.loginAs("ppondicherry", "password");
+		sampleUsage.loginAs(prop.getProperty("username"), prop.getProperty("password"));
 		driver.findElement(By.cssSelector("a[href*='pelagos-symfony/dev/ppondicherry/dif'")).click();
 		
 //		driver.get("https://proteus.tamucc.edu/pelagos-symfony/dev/ppondicherry/data-discovery");
@@ -50,5 +55,30 @@ public class AnotherAutomationSample {
 		driver.findElement(By.id("username")).sendKeys(username);
 		driver.findElement(By.id("password")).sendKeys(password);
 		driver.findElement(By.className("btn-submit")).submit();
+	}
+	
+	public static Properties getProperties(Properties prop) {
+		
+		InputStream input = null;
+		
+		try {
+			input = new FileInputStream("config.properties");
+			
+			//load a properties file
+			prop.load(input);
+			
+			return prop;
+			} catch (IOException ex) {
+		        ex.printStackTrace();
+		    } finally {
+		        if (input != null) {
+		            try {
+		                input.close();
+		            } catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		        }
+		    }
+		return null;
 	}
 }

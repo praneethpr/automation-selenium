@@ -9,4 +9,3 @@
 ####Sample config.properties
 username=username
 password=password
-env=https://proteus.tamucc.edu/
